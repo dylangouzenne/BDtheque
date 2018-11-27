@@ -1,0 +1,168 @@
+#------------------------------------------------------------
+#        Script MySQL.
+#------------------------------------------------------------
+
+
+#------------------------------------------------------------
+# Table: auteur
+#------------------------------------------------------------
+
+CREATE TABLE auteur(
+        auteur_id     Int  Auto_increment  NOT NULL ,
+        auteur_prenom Varchar (50) NOT NULL ,
+        auteur_nom    Varchar (50) NOT NULL ,
+        auteur_pseudo Varchar (50) NOT NULL ,
+        auteur_pays   Varchar (50) NOT NULL
+	,CONSTRAINT auteur_PK PRIMARY KEY (auteur_id)
+)ENGINE=InnoDB;
+
+
+#------------------------------------------------------------
+# Table: editeur
+#------------------------------------------------------------
+
+CREATE TABLE editeur(
+        editeur_id         Int  Auto_increment  NOT NULL ,
+        editeur_nom        Varchar (50) NOT NULL ,
+        editeur_collection Varchar (50) NOT NULL ,
+        editeur_serie      Varchar (50) NOT NULL
+	,CONSTRAINT editeur_PK PRIMARY KEY (editeur_id)
+)ENGINE=InnoDB;
+
+
+#------------------------------------------------------------
+# Table: collection
+#------------------------------------------------------------
+
+CREATE TABLE collection(
+        collection_id      Int  Auto_increment  NOT NULL ,
+        collection_nom     Varchar (50) NOT NULL ,
+        collection_editeur Varchar (50) NOT NULL ,
+        editeur_id         Int NOT NULL
+	,CONSTRAINT collection_PK PRIMARY KEY (collection_id)
+
+	,CONSTRAINT collection_editeur_FK FOREIGN KEY (editeur_id) REFERENCES editeur(editeur_id)
+)ENGINE=InnoDB;
+
+
+#------------------------------------------------------------
+# Table: serie
+#------------------------------------------------------------
+
+CREATE TABLE serie(
+        serie_id      Int  Auto_increment  NOT NULL ,
+        serie_nom     Varchar (50) NOT NULL ,
+        serie_genre   Varchar (50) NOT NULL ,
+        serie_tome    Int NOT NULL ,
+        serie_origine Varchar (50) NOT NULL ,
+        serie_langue  Varchar (50) NOT NULL
+	,CONSTRAINT serie_PK PRIMARY KEY (serie_id)
+)ENGINE=InnoDB;
+
+
+#------------------------------------------------------------
+# Table: bd
+#------------------------------------------------------------
+
+CREATE TABLE bd(
+        bd_id        Int  Auto_increment  NOT NULL ,
+        bd_titre     Varchar (50) NOT NULL ,
+        bd_auteur    Varchar (50) NOT NULL ,
+        bd_editeur   Varchar (50) NOT NULL ,
+        bd_serie     Varchar (50) NOT NULL ,
+        bd_colection Varchar (50) NOT NULL ,
+        bd_style     Varchar (50) NOT NULL ,
+        bd_isbn      Int NOT NULL ,
+        bd_parution  Varchar (50) NOT NULL ,
+        bd_origine   Varchar (50) NOT NULL ,
+        bd_langue    Varchar (50) NOT NULL ,
+        bd_dl        Date NOT NULL ,
+        bd_cote      Float NOT NULL ,
+        bd_reedition Bool NOT NULL ,
+        serie_id     Int
+	,CONSTRAINT bd_PK PRIMARY KEY (bd_id)
+
+	,CONSTRAINT bd_serie_FK FOREIGN KEY (serie_id) REFERENCES serie(serie_id)
+)ENGINE=InnoDB;
+
+
+#------------------------------------------------------------
+# Table: user
+#------------------------------------------------------------
+
+CREATE TABLE user(
+        user_id     Int  Auto_increment  NOT NULL ,
+        user_genre  Varchar (50) NOT NULL ,
+        user_nom    Varchar (50) NOT NULL ,
+        user_prenom Varchar (50) NOT NULL ,
+        user_age    Int NOT NULL ,
+        user_pays   Varchar (50) NOT NULL
+	,CONSTRAINT user_PK PRIMARY KEY (user_id)
+)ENGINE=InnoDB;
+
+
+#------------------------------------------------------------
+# Table: creer
+#------------------------------------------------------------
+
+CREATE TABLE creer(
+        auteur_id Int NOT NULL ,
+        bd_id     Int NOT NULL
+	,CONSTRAINT creer_PK PRIMARY KEY (auteur_id,bd_id)
+
+	,CONSTRAINT creer_auteur_FK FOREIGN KEY (auteur_id) REFERENCES auteur(auteur_id)
+	,CONSTRAINT creer_bd0_FK FOREIGN KEY (bd_id) REFERENCES bd(bd_id)
+)ENGINE=InnoDB;
+
+
+#------------------------------------------------------------
+# Table: appartenir
+#------------------------------------------------------------
+
+CREATE TABLE appartenir(
+        serie_id      Int NOT NULL ,
+        collection_id Int NOT NULL
+	,CONSTRAINT appartenir_PK PRIMARY KEY (serie_id,collection_id)
+
+	,CONSTRAINT appartenir_serie_FK FOREIGN KEY (serie_id) REFERENCES serie(serie_id)
+	,CONSTRAINT appartenir_collection0_FK FOREIGN KEY (collection_id) REFERENCES collection(collection_id)
+)ENGINE=InnoDB;
+
+
+#------------------------------------------------------------
+# Table: posséder
+#------------------------------------------------------------
+
+CREATE TABLE posseder(
+        user_id Int NOT NULL ,
+        bd_id   Int NOT NULL ,
+        etat_bd Varchar (50) NOT NULL
+	,CONSTRAINT posseder_PK PRIMARY KEY (user_id,bd_id)
+
+	,CONSTRAINT posseder_user_FK FOREIGN KEY (user_id) REFERENCES user(user_id)
+	,CONSTRAINT posseder_bd0_FK FOREIGN KEY (bd_id) REFERENCES bd(bd_id)
+)ENGINE=InnoDB;
+
+
+#------------------------------------------------------------
+# Table: donner_avis
+#------------------------------------------------------------
+
+CREATE TABLE donner_avis(
+        user_id Int NOT NULL ,
+        bd_id   Int NOT NULL ,
+        avis    Varchar (50) NOT NULL
+	,CONSTRAINT donner_avis_PK PRIMARY KEY (user_id,bd_id)
+
+	,CONSTRAINT donner_avis_user_FK FOREIGN KEY (user_id) REFERENCES user(user_id)
+	,CONSTRAINT donner_avis_bd0_FK FOREIGN KEY (bd_id) REFERENCES bd(bd_id)
+)ENGINE=InnoDB;
+
+
+
+
+
+
+	=======================================================================
+	   Désolé, il faut activer cette version pour voir la suite du script ! 
+	=======================================================================
